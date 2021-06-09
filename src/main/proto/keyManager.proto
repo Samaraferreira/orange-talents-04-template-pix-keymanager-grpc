@@ -6,8 +6,12 @@ option java_outer_classname = "KeyManager";
 
 package br.com.zup.edu;
 
-service KeyManagerService {
+service KeyManagerRegisterService {
   rpc register (CreateKeyRequest) returns (CreateKeyResponse) {}
+}
+
+service KeyManagerDeleteService {
+  rpc delete (DeleteKeyRequest) returns (DeleteKeyResponse) {}
 }
 
 enum KeyType {
@@ -32,5 +36,14 @@ message CreateKeyRequest {
 }
 
 message CreateKeyResponse {
+  string pixId = 1;
+}
+
+message DeleteKeyRequest {
+  string pixId = 1;
+  string clientId = 2;
+}
+
+message DeleteKeyResponse {
   string pixId = 1;
 }

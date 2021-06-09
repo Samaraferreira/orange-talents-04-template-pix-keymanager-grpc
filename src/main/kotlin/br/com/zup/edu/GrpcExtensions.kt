@@ -2,6 +2,7 @@ package br.com.zup.edu
 
 import br.com.zup.edu.pix.register.RegisterKeyRequest
 import br.com.zup.edu.pix.model.PixKeyType
+import br.com.zup.edu.pix.remove.RemoveKeyRequest
 import java.util.UUID
 
 fun CreateKeyRequest.toModel(): RegisterKeyRequest {
@@ -18,3 +19,5 @@ fun CreateKeyRequest.toModel(): RegisterKeyRequest {
         }
     )
 }
+
+fun DeleteKeyRequest.toModel() = RemoveKeyRequest(UUID.fromString(clientId), UUID.fromString(pixId))
