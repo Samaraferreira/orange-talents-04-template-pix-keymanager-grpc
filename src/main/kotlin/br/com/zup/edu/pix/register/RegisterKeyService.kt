@@ -15,23 +15,18 @@ import javax.validation.Valid
 @Validated
 class RegisterKeyService(val repository: PixKeyRepository, val itauClient: ItauClient) {
 
-    private val logger = LoggerFactory.getLogger(this::class.java)
-
     @Transactional
-    fun register(@Valid registerKeyRequest: RegisterKeyRequest): PixKey {
-        logger.info("$registerKeyRequest")
+    fun register(@Valid request: RegisterKeyRequest): PixKey {
 
-        // verifica se cliente existe no itau
-        val response = itauClient.findAccount(registerKeyRequest.clientId.toString(), registerKeyRequest.accountType!!.name)
+        val response = itauClient.findAccount(request.clientId.toString(), request.accountType!!.name)
         val itauAccount = response.body()?.toModel()
-                            ?: throw ClientNotFoundException("Client with id ${registerKeyRequest.clientId} not found")
+                            ?: throw ClientNotFoundException("Client with id ${request.clientId} not found")
 
-        // verifica se a chave já foi cadastrada
-        if(repository.existsByKeyValue(registerKeyRequest.keyValue)) {
+        if(repository.existsByKeyValue(request.keyValue)) {
             throw PixKeyAlreadyExistsException("Pix key already registered")
         }
 
-        val pixKeyEntity = registerKeyRequest.toModel(itauAccount)
+        val pixKeyEntity = request.toModel(itauAccount)
         repository.save(pixKeyEntity)
 
         return pixKeyEntity

@@ -2,7 +2,7 @@ package br.com.zup.edu.pix.register
 
 import br.com.zup.edu.AccountType
 import br.com.zup.edu.CreateKeyRequest
-import br.com.zup.edu.KeyManagerServiceGrpc
+import br.com.zup.edu.KeyManagerRegisterServiceGrpc
 import br.com.zup.edu.KeyType
 import br.com.zup.edu.client.itau.AccountOwnerResponse
 import br.com.zup.edu.client.itau.InstitutionResponse
@@ -34,7 +34,7 @@ import javax.inject.Singleton
 @MicronautTest(transactional = false)
 class RegisterKeyEndpointTest(
     val repository: PixKeyRepository,
-    val grpcClient: KeyManagerServiceGrpc.KeyManagerServiceBlockingStub
+    val grpcClient: KeyManagerRegisterServiceGrpc.KeyManagerRegisterServiceBlockingStub
 ) {
 
     @Inject
@@ -55,10 +55,10 @@ class RegisterKeyEndpointTest(
     }
 
     @Test
-    fun `should be create a new pix key`() {
+    fun `should create a new pix key`() {
         Mockito
             .`when`(itauClient.findAccount(CLIENT_ID.toString(), "CONTA_CORRENTE"))
-            .thenReturn(HttpResponse.ok(crateFakeItauResponse()))
+            .thenReturn(HttpResponse.ok(createFakeItauResponse()))
 
         val response = grpcClient.register(createFakeKeyRequest())
 
@@ -69,7 +69,7 @@ class RegisterKeyEndpointTest(
     }
 
     @Test
-    fun `should throw ConstraintViolationException when parameters is invalid`() {
+    fun `should throw ConstraintViolationException if parameters is invalid`() {
         val invalidRequest = CreateKeyRequest.newBuilder()
             .setClientId(CLIENT_ID.toString())
             .setAccountType(AccountType.UNKNOWN_ACCOUNT_TYPE)
@@ -87,7 +87,7 @@ class RegisterKeyEndpointTest(
     }
 
     @Test
-    fun `should throw ClientNotFoundException when account not found`() {
+    fun `should throw ClientNotFoundException if account not found`() {
         Mockito
             .`when`(itauClient.findAccount(CLIENT_ID.toString(), "CONTA_CORRENTE"))
             .thenReturn(HttpResponse.notFound())
@@ -103,12 +103,12 @@ class RegisterKeyEndpointTest(
     }
 
     @Test
-    fun `should throw PixKeyAlreadyExistsException when key already registered`() {
+    fun `should throw PixKeyAlreadyExistsException if key already registered`() {
         Mockito
             .`when`(itauClient.findAccount(CLIENT_ID.toString(), "CONTA_CORRENTE"))
-            .thenReturn(HttpResponse.ok(crateFakeItauResponse()))
+            .thenReturn(HttpResponse.ok(createFakeItauResponse()))
 
-        repository.save(creteFakePixKey())
+        repository.save(createFakePixKey())
 
         val request = createFakeKeyRequest()
 
@@ -131,17 +131,17 @@ class RegisterKeyEndpointTest(
             .build()
     }
 
-    private fun creteFakePixKey(): PixKey {
+    private fun createFakePixKey(): PixKey {
         return PixKey(
             CLIENT_ID,
             "maria@test.com",
             PixKeyType.EMAIL,
             AccountType.CONTA_CORRENTE,
-            crateFakeItauResponse().toModel()
+            createFakeItauResponse().toModel()
         )
     }
 
-    private fun crateFakeItauResponse(): ItauAccountResponse {
+    private fun createFakeItauResponse(): ItauAccountResponse {
         return ItauAccountResponse(
             "123456",
             "4443",
@@ -158,8 +158,8 @@ class RegisterKeyEndpointTest(
     @Factory
     class Clients {
         @Singleton
-        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): KeyManagerServiceGrpc.KeyManagerServiceBlockingStub? {
-            return KeyManagerServiceGrpc.newBlockingStub(channel);
+        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): KeyManagerRegisterServiceGrpc.KeyManagerRegisterServiceBlockingStub? {
+            return KeyManagerRegisterServiceGrpc.newBlockingStub(channel);
         }
     }
 
