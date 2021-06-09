@@ -19,11 +19,12 @@ class RegisterKeyService(val repository: PixKeyRepository, val itauClient: ItauC
 
     @Transactional
     fun register(@Valid registerKeyRequest: RegisterKeyRequest): PixKey {
+        logger.info("$registerKeyRequest")
 
         // verifica se cliente existe no itau
         val response = itauClient.findAccount(registerKeyRequest.clientId.toString(), registerKeyRequest.accountType!!.name)
         val itauAccount = response.body()?.toModel()
-                            ?: throw ClientNotFoundException("Client with id ${registerKeyRequest.clientId.toString()} not found")
+                            ?: throw ClientNotFoundException("Client with id ${registerKeyRequest.clientId} not found")
 
         // verifica se a chave já foi cadastrada
         if(repository.existsByKeyValue(registerKeyRequest.keyValue)) {

@@ -1,6 +1,5 @@
 package br.com.zup.edu.pix.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.Column
 import javax.persistence.Embeddable
 import javax.validation.constraints.NotBlank
