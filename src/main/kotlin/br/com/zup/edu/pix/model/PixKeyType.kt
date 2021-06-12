@@ -1,5 +1,6 @@
 package br.com.zup.edu.pix.model
 
+import br.com.zup.edu.client.bcb.types.KeyTypeBcb
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator
 import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator
 
@@ -38,4 +39,13 @@ enum class PixKeyType {
     };
 
     abstract fun isValid(key: String?): Boolean
+
+    fun toBcbType(): KeyTypeBcb {
+        return when(this) {
+            CPF -> KeyTypeBcb.CPF
+            PHONE_NUMBER -> KeyTypeBcb.PHONE
+            EMAIL -> KeyTypeBcb.EMAIL
+            RANDOM_KEY -> KeyTypeBcb.RANDOM
+        }
+    }
 }

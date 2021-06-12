@@ -18,13 +18,13 @@ class PixKey(
     @Column(nullable = false)
     val clientId: UUID,
     @Column(nullable = false, unique = true)
-    val keyValue: String,
+    var keyValue: String,
     @field:Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val keyType: PixKeyType,
     @field:Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val accountType: AccountType?,
+    val accountType: AccountType,
     @field:Valid
     @Embedded
     val account: Account
@@ -38,4 +38,21 @@ class PixKey(
 
     @Column(nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now()
+
+    /**
+     * Verifica se é chave uma aleatória
+     */
+    private fun isRandomKey(): Boolean {
+        return this.keyType == PixKeyType.RANDOM_KEY
+    }
+
+    /**
+     * Atualiza a valor da chave. Somente chave do tipo ALEATORIA pode
+     * ser alterado.
+     */
+    fun updateKeyValue(key: String) {
+        if (isRandomKey()) {
+            this.keyValue = key
+        }
+    }
 }

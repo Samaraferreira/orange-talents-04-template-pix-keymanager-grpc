@@ -45,7 +45,7 @@ dependencies {
     implementation("io.micronaut:micronaut-validation")
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
-
+    implementation("io.micronaut.xml:micronaut-jackson-xml")
     implementation("io.micronaut:micronaut-http-client")
     testImplementation("org.mockito:mockito-core")
     testImplementation("com.h2database:h2")

@@ -13,10 +13,10 @@ import javax.inject.Singleton
 @Singleton
 class RegisterKeyEndpoint(val service: RegisterKeyService) : KeyManagerRegisterServiceGrpc.KeyManagerRegisterServiceImplBase() {
 
-    private val logger = LoggerFactory.getLogger(this::class.java)
+    private val LOGGER = LoggerFactory.getLogger(this::class.java)
 
     override fun register(request: CreateKeyRequest?, responseObserver: StreamObserver<CreateKeyResponse>?) {
-        logger.info("New register key request: $request")
+        LOGGER.info("New register key request: $request")
 
         val pixKey = service.register(request!!.toModel())
 
