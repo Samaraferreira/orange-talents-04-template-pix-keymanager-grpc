@@ -30,6 +30,8 @@ class RegisterKeyService(
     val bcbClient: BcbClient
 ) {
 
+    private val LOGGER = LoggerFactory.getLogger(this::class.java)
+
     @Transactional
     fun register(@Valid request: RegisterKeyRequest): PixKey {
 
@@ -57,11 +59,13 @@ class RegisterKeyService(
         }
          */
 
-        val responseBcb = bcbClient.registerKey(CreatePixKeyBcbRequest.of(newPixKey))
-
-        if (responseBcb.status == HttpStatus.UNPROCESSABLE_ENTITY) {
-            throw PixKeyAlreadyExistsException("Pix key already registered")
+        val responseBcb = bcbClient.registerKey(CreatePixKeyBcbRequest.of(newPixKey)).also {
+            LOGGER.info("Registrando chave Pix no Banco Central do Brasil (BCB): $it")
         }
+
+//        if (responseBcb.status == HttpStatus.UNPROCESSABLE_ENTITY) {
+//            throw PixKeyAlreadyExistsException("Pix key already registered")
+//        }
 
         if (responseBcb.status != HttpStatus.CREATED) {
             throw IllegalStateException("Could not register pix key")

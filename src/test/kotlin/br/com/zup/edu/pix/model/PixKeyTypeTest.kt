@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test
 
 internal class PixKeyTypeTest {
 
-    @Nested
+    @Nested // aninha vários testes
     inner class RANDOM_KEY {
         @Test
-        fun `should be valid when key value is null or blank`() {
+        fun `should be valid if key value is null or blank`() {
             with(PixKeyType.RANDOM_KEY) {
                 assertTrue(isValid(null))
                 assertTrue(isValid(""))
