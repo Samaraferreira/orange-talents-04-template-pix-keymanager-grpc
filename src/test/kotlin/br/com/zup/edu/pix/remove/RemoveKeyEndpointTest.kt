@@ -161,16 +161,16 @@ internal class RemoveKeyEndpointTest(
             clientId = CLIENT_ID,
             keyValue = KEY_VALUE.toString(),
             keyType = PixKeyType.RANDOM_KEY,
-            accountType = AccountType.CONTA_CORRENTE,
             account = createFakeAccount()
         )
     }
 
     private fun createFakeAccount(): Account {
         return Account(
+            accountType = AccountType.CONTA_CORRENTE,
             accountNumber = "123456",
             agencyNumber = "4443",
-            clientName = "CONTA_CORRENTE",
+            clientName = "Maria Test",
             clientCpf = "74304413007",
             institutionName = "ITAÚ UNIBANCO S.A.",
         )

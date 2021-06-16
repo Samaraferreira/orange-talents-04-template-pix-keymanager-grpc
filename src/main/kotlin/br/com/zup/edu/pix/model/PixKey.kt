@@ -1,6 +1,5 @@
 package br.com.zup.edu.pix.model
 
-import br.com.zup.edu.AccountType
 import java.time.LocalDateTime
 import java.util.UUID
 import javax.persistence.Column
@@ -22,9 +21,6 @@ class PixKey(
     @field:Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val keyType: PixKeyType,
-    @field:Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    val accountType: AccountType,
     @field:Valid
     @Embedded
     val account: Account
@@ -40,7 +36,7 @@ class PixKey(
     val createdAt: LocalDateTime = LocalDateTime.now()
 
     /**
-     * Verifica se é chave uma aleatória
+     * Verifica se é uma chave aleatória
      */
     private fun isRandomKey(): Boolean {
         return this.keyType == PixKeyType.RANDOM_KEY
@@ -55,4 +51,10 @@ class PixKey(
             this.keyValue = key
         }
     }
+
+    override fun toString(): String {
+        return "PixKey(clientId=$clientId, keyValue='$keyValue', keyType=$keyType, account=$account, id=$id, pixId=$pixId, createdAt=$createdAt)"
+    }
+
+
 }

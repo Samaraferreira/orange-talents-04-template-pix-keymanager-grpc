@@ -49,6 +49,7 @@ dependencies {
     implementation("io.micronaut:micronaut-http-client")
     testImplementation("org.mockito:mockito-core")
     testImplementation("com.h2database:h2")
+    testImplementation("org.hamcrest:hamcrest-core:2.2")
 }
 
 

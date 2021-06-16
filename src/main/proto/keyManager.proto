@@ -5,6 +5,7 @@ option java_package = "br.com.zup.edu";
 option java_outer_classname = "KeyManager";
 
 package br.com.zup.edu;
+import "google/protobuf/timestamp.proto";
 
 service KeyManagerRegisterService {
   rpc register (CreateKeyRequest) returns (CreateKeyResponse) {}
@@ -12,6 +13,14 @@ service KeyManagerRegisterService {
 
 service KeyManagerDeleteService {
   rpc delete (DeleteKeyRequest) returns (DeleteKeyResponse) {}
+}
+
+service KeyManagerGetService {
+  rpc get (GetKeyRequest) returns (GetKeyResponse) {}
+}
+
+service KeyManagerGetAllService {
+  rpc getAll (ListAllKeysRequest) returns (ListAllKeysResponse) {}
 }
 
 enum KeyType {
@@ -26,6 +35,57 @@ enum AccountType {
   UNKNOWN_ACCOUNT_TYPE = 0;
   CONTA_CORRENTE = 1;
   CONTA_POUPANCA = 2;
+}
+
+message ListAllKeysRequest {
+  string clientId = 1;
+}
+
+message ListAllKeysResponse {
+  message PixKey {
+    string pixId = 1;
+    KeyType keyType = 2;
+    string keyValue = 3;
+    AccountType accountType = 4;
+    google.protobuf.Timestamp createdAt = 5;
+  }
+
+  string clientId = 1;
+  repeated PixKey keys = 2;
+}
+
+message GetKeyRequest {
+  message FilterByPixId {
+    string pixId = 1;
+    string clientId = 2;
+  }
+
+  oneof Filter {
+    FilterByPixId pixId = 1;
+    string key = 2;
+  }
+}
+
+message GetKeyResponse {
+  message PixKey {
+    message AccountInfo {
+      AccountType accountType = 1;
+      string institutionName = 2; /** ITAU UNIBANCO */
+      string clientName = 3;
+      string clientCpf = 4;
+      string agencyNumber = 5;
+      string accountNumber = 6;
+    }
+
+    KeyType keyType = 1;
+    string keyValue = 2;
+    AccountInfo account = 3;
+    google.protobuf.Timestamp createdAt = 4;
+  }
+
+  string clientId = 1;
+  string pixId = 2;
+  PixKey pixKey = 3;
 }
 
 message CreateKeyRequest {

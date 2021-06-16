@@ -14,7 +14,10 @@ class RemoveKeyEndpoint(val service: RemoveKeyService) : KeyManagerDeleteService
     override fun delete(request: DeleteKeyRequest?, responseObserver: StreamObserver<DeleteKeyResponse>?) {
         service.remove(request!!.clientId, request.pixId)
 
-        responseObserver!!.onNext(DeleteKeyResponse.newBuilder().setPixId(request.pixId).build())
+        responseObserver!!.onNext(DeleteKeyResponse
+            .newBuilder()
+            .setPixId(request.pixId)
+            .build())
         responseObserver.onCompleted()
     }
 }

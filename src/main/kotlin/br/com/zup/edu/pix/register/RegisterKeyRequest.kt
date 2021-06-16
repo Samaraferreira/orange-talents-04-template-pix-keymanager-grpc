@@ -23,7 +23,6 @@ data class RegisterKeyRequest(@field:NotNull @ValidUUID val clientId: UUID,
             clientId = clientId,
             keyValue = if (keyType == PixKeyType.RANDOM_KEY) UUID.randomUUID().toString() else this.keyValue,
             keyType = keyType!!,
-            accountType = accountType!!,
             account = account
         )
     }

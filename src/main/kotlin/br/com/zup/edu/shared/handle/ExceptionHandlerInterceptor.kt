@@ -16,9 +16,7 @@ class ExceptionHandlerInterceptor(@Inject private val resolver: ExceptionHandler
     override fun intercept(context: MethodInvocationContext<BindableService, Any?>): Any? {
         return try {
             context.proceed()
-        } catch (
-            e: Exception
-        ) {
+        } catch (e: Exception) {
 
             val handler = resolver.resolve(e)
             val status = handler.handle(e)

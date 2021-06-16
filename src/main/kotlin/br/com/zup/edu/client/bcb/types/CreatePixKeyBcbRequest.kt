@@ -19,7 +19,7 @@ data class CreatePixKeyBcbRequest(
                         participant = "60701190",
                         branch = account.agencyNumber,
                         accountNumber = account.accountNumber,
-                        accountType = accountType.toAccountTypeBcb()
+                        accountType = account.accountType.toAccountTypeBcb()
                     ),
                     owner = OwnerBcb(
                         type = OwnerType.NATURAL_PERSON,

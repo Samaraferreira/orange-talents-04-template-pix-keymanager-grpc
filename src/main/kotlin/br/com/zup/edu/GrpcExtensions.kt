@@ -2,6 +2,8 @@ package br.com.zup.edu
 
 import br.com.zup.edu.pix.register.RegisterKeyRequest
 import br.com.zup.edu.pix.model.PixKeyType
+import br.com.zup.edu.GetKeyRequest.FilterCase.*
+import br.com.zup.edu.pix.search.Filter
 import java.util.UUID
 
 fun CreateKeyRequest.toModel(): RegisterKeyRequest {
@@ -18,3 +20,12 @@ fun CreateKeyRequest.toModel(): RegisterKeyRequest {
         }
     )
 }
+
+//fun GetKeyRequest.toModel() {
+////    when(filterCase) {
+////        PIXID -> pixId.let {
+////            Filter.getByPixId(clientId = it.clientId, pixId = it.pixId)
+////        }
+////        KEY -> Filter.getByKey()
+//    }
+//}

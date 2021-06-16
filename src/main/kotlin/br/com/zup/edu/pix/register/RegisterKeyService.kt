@@ -43,37 +43,33 @@ class RegisterKeyService(
             throw PixKeyAlreadyExistsException("Pix key already registered")
         }
 
-        val newPixKey = request.toModel(itauAccount)
-
-        /*
-        var responseBcb: CreatePixKeyBcbResponse? = null
         try {
-            responseBcb = bcbClient.registerKey(CreatePixKeyBcbRequest.of(newPixKey)).body()
-            LOGGER.info("Pix key saved on Banco Central do Brasil (BCB)")
+            val newPixKey = request.toModel(itauAccount)
+
+            // Registrando no BCB
+            val responseBcb = bcbClient.registerKey(CreatePixKeyBcbRequest.of(newPixKey))
+            LOGGER.info("Pix key saved in BCB")
+
+            newPixKey.updateKeyValue(responseBcb.body().key)
+            repository.save(newPixKey)
+
+            return newPixKey
         } catch (e: HttpClientResponseException) {
-            if (e.status == HttpStatus.UNPROCESSABLE_ENTITY) {
+            if (e.status == HttpStatus.UNPROCESSABLE_ENTITY)
                 throw PixKeyAlreadyExistsException("Pix key already registered")
-            }
-            LOGGER.error("Failed to connect to the Banco Central do Brasil (BCB) server")
+
+            LOGGER.error("Failed to connect to the BCB server")
             throw IllegalStateException("Could not register pix key")
         }
-         */
 
-        val responseBcb = bcbClient.registerKey(CreatePixKeyBcbRequest.of(newPixKey)).also {
-            LOGGER.info("Registrando chave Pix no Banco Central do Brasil (BCB): $it")
-        }
-
+//        val responseBcb = bcbClient.registerKey(CreatePixKeyBcbRequest.of(newPixKey))
+//
 //        if (responseBcb.status == HttpStatus.UNPROCESSABLE_ENTITY) {
 //            throw PixKeyAlreadyExistsException("Pix key already registered")
 //        }
 
-        if (responseBcb.status != HttpStatus.CREATED) {
-            throw IllegalStateException("Could not register pix key")
-        }
-
-        newPixKey.updateKeyValue(responseBcb.body().key)
-        repository.save(newPixKey)
-
-        return newPixKey
+//        if (responseBcb.status != HttpStatus.CREATED) {
+//            throw IllegalStateException("Could not register pix key")
+//        }
     }
 }

@@ -8,4 +8,4 @@ import io.micronaut.aop.Around
 )
 @Retention(AnnotationRetention.RUNTIME)
 @Around
-annotation class ErrorHandler()
+annotation class ErrorHandler
