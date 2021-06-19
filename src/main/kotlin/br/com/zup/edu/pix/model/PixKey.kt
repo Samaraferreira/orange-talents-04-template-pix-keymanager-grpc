@@ -26,7 +26,7 @@ class PixKey(
     val account: Account
 ) {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // postgres ñ gera UUID
     val id: Long? = null
 
     @Column(nullable = false)

@@ -166,6 +166,7 @@ internal class SearchKeyEndpointTest(
     fun `should load Pix key by keyValue if key not exists locally but is registered in BCB`() {
         // cenário
         val bcbResponse = pixKeyDetailsResponse()
+
         `when`(bcbClient.findByKey(key = "user.from.another.bank@santander.com.br"))
         .thenReturn(HttpResponse.ok(pixKeyDetailsResponse()))
 
@@ -176,7 +177,6 @@ internal class SearchKeyEndpointTest(
 
         // validação
         with(response) {
-            println(this)
             assertEquals("", this.pixId)
             assertEquals("", this.clientId)
             assertEquals(bcbResponse.keyType.name, this.pixKey.keyType.name)

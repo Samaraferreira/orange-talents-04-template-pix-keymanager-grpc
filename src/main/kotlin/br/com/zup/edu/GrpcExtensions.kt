@@ -20,12 +20,3 @@ fun CreateKeyRequest.toModel(): RegisterKeyRequest {
         }
     )
 }
-
-//fun GetKeyRequest.toModel() {
-////    when(filterCase) {
-////        PIXID -> pixId.let {
-////            Filter.getByPixId(clientId = it.clientId, pixId = it.pixId)
-////        }
-////        KEY -> Filter.getByKey()
-//    }
-//}
